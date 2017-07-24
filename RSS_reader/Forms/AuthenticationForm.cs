@@ -24,6 +24,8 @@ namespace RSS_reader
         public AuthenticationForm()
         {
             InitializeComponent();
+            EmailField.Text = "stanish";
+            PasswordField.Text = "Dima4321re.";
             ErrorMessage.Text = "";
         }
 
@@ -81,7 +83,7 @@ namespace RSS_reader
             }
             if (TypeForm & String.Compare(Password, Confirm) !=0)
             {
-                ErrorMessage.Text = "Password mismatch";
+                ErrorMessage.Text = "Incorrect data";
                 return;
             }
             if(TypeForm)

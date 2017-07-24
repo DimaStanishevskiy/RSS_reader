@@ -52,9 +52,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChannelClass.cs" />
     <Compile Include="Classes\InterplayForServer.cs" />
-    <Compile Include="Classes\User.cs" />
+    <Compile Include="Forms\ChangeChannel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangeChannel.Designer.cs">
+      <DependentUpon>ChangeChannel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ChangeCollection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangeCollection.Designer.cs">
+      <DependentUpon>ChangeCollection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Channel.cs" />
+    <Compile Include="Models\Collection.cs" />
+    <Compile Include="Models\News.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Forms\AuthenticationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,12 +81,16 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageOfChanel.cs" />
-    <Compile Include="Items.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangeChannel.resx">
+      <DependentUpon>ChangeChannel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangeCollection.resx">
+      <DependentUpon>ChangeCollection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

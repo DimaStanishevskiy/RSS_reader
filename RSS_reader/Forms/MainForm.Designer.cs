@@ -28,134 +28,194 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.AddCollectionButton = new System.Windows.Forms.Button();
+            this.DeleteCollectionButton = new System.Windows.Forms.Button();
+            this.RenameCollectionButton = new System.Windows.Forms.Button();
+            this.AddChannelBox = new System.Windows.Forms.Button();
+            this.DeleteChannelButton = new System.Windows.Forms.Button();
+            this.RenameChannelButton = new System.Windows.Forms.Button();
+            this.CollectionsListBox = new System.Windows.Forms.ListBox();
+            this.ChannelListBox = new System.Windows.Forms.ListBox();
+            this.webBrowser = new System.Windows.Forms.WebBrowser();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // tableLayoutPanel1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(156, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "URL адрес RSS ленты";
+            this.tableLayoutPanel1.ColumnCount = 4;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.AddCollectionButton, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.DeleteCollectionButton, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.RenameCollectionButton, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.AddChannelBox, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.DeleteChannelButton, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.RenameChannelButton, 2, 4);
+            this.tableLayoutPanel1.Controls.Add(this.CollectionsListBox, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.ChannelListBox, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.webBrowser, 3, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(758, 529);
+            this.tableLayoutPanel1.TabIndex = 4;
             // 
-            // textBox1
+            // AddCollectionButton
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.AddCollectionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 29);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(1401, 22);
-            this.textBox1.TabIndex = 1;
+            this.AddCollectionButton.Location = new System.Drawing.Point(3, 247);
+            this.AddCollectionButton.Name = "AddCollectionButton";
+            this.AddCollectionButton.Size = new System.Drawing.Size(74, 34);
+            this.AddCollectionButton.TabIndex = 0;
+            this.AddCollectionButton.Text = "Add";
+            this.AddCollectionButton.UseVisualStyleBackColor = true;
+            this.AddCollectionButton.Click += new System.EventHandler(this.AddCollectionButton_Click);
             // 
-            // splitContainer1
+            // DeleteCollectionButton
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(12, 57);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.listBox1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.webBrowser1);
-            this.splitContainer1.Size = new System.Drawing.Size(1517, 640);
-            this.splitContainer1.SplitterDistance = 505;
-            this.splitContainer1.TabIndex = 2;
-            // 
-            // listBox1
-            // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.DeleteCollectionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(0, 0);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(502, 644);
-            this.listBox1.TabIndex = 0;
+            this.DeleteCollectionButton.Location = new System.Drawing.Point(83, 247);
+            this.DeleteCollectionButton.Name = "DeleteCollectionButton";
+            this.DeleteCollectionButton.Size = new System.Drawing.Size(74, 34);
+            this.DeleteCollectionButton.TabIndex = 1;
+            this.DeleteCollectionButton.Text = "Delete";
+            this.DeleteCollectionButton.UseVisualStyleBackColor = true;
+            this.DeleteCollectionButton.Click += new System.EventHandler(this.DeleteCollectionButton_Click);
             // 
-            // webBrowser1
+            // RenameCollectionButton
             // 
-            this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.RenameCollectionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1008, 640);
-            this.webBrowser1.TabIndex = 0;
+            this.RenameCollectionButton.Location = new System.Drawing.Point(163, 247);
+            this.RenameCollectionButton.Name = "RenameCollectionButton";
+            this.RenameCollectionButton.Size = new System.Drawing.Size(74, 34);
+            this.RenameCollectionButton.TabIndex = 2;
+            this.RenameCollectionButton.Text = "Rename";
+            this.RenameCollectionButton.UseVisualStyleBackColor = true;
+            this.RenameCollectionButton.Click += new System.EventHandler(this.RenameCollectionButton_Click);
             // 
-            // label2
+            // AddChannelBox
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.AddChannelBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 700);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(123, 17);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Всего сообщений";
+            this.AddChannelBox.Location = new System.Drawing.Point(3, 491);
+            this.AddChannelBox.Name = "AddChannelBox";
+            this.AddChannelBox.Size = new System.Drawing.Size(74, 35);
+            this.AddChannelBox.TabIndex = 3;
+            this.AddChannelBox.Text = "Add";
+            this.AddChannelBox.UseVisualStyleBackColor = true;
+            this.AddChannelBox.Click += new System.EventHandler(this.AddChannelBox_Click);
             // 
-            // button1
+            // DeleteChannelButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(1420, 29);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(109, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Загрузить";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.DeleteChannelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DeleteChannelButton.Location = new System.Drawing.Point(83, 491);
+            this.DeleteChannelButton.Name = "DeleteChannelButton";
+            this.DeleteChannelButton.Size = new System.Drawing.Size(74, 35);
+            this.DeleteChannelButton.TabIndex = 4;
+            this.DeleteChannelButton.Text = "Delete";
+            this.DeleteChannelButton.UseVisualStyleBackColor = true;
+            this.DeleteChannelButton.Click += new System.EventHandler(this.DeleteChannelButton_Click);
+            // 
+            // RenameChannelButton
+            // 
+            this.RenameChannelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.RenameChannelButton.Location = new System.Drawing.Point(163, 491);
+            this.RenameChannelButton.Name = "RenameChannelButton";
+            this.RenameChannelButton.Size = new System.Drawing.Size(74, 35);
+            this.RenameChannelButton.TabIndex = 5;
+            this.RenameChannelButton.Text = "Rename";
+            this.RenameChannelButton.UseVisualStyleBackColor = true;
+            this.RenameChannelButton.Click += new System.EventHandler(this.RenameChannelButton_Click);
+            // 
+            // CollectionsListBox
+            // 
+            this.CollectionsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.CollectionsListBox, 3);
+            this.CollectionsListBox.FormattingEnabled = true;
+            this.CollectionsListBox.ItemHeight = 16;
+            this.CollectionsListBox.Location = new System.Drawing.Point(3, 43);
+            this.CollectionsListBox.Name = "CollectionsListBox";
+            this.CollectionsListBox.Size = new System.Drawing.Size(234, 196);
+            this.CollectionsListBox.TabIndex = 6;
+            this.CollectionsListBox.SelectedValueChanged += new System.EventHandler(this.CollectionsListBox_SelectedValueChanged);
+            // 
+            // ChannelListBox
+            // 
+            this.ChannelListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.SetColumnSpan(this.ChannelListBox, 3);
+            this.ChannelListBox.FormattingEnabled = true;
+            this.ChannelListBox.ItemHeight = 16;
+            this.ChannelListBox.Location = new System.Drawing.Point(3, 287);
+            this.ChannelListBox.Name = "ChannelListBox";
+            this.ChannelListBox.Size = new System.Drawing.Size(234, 196);
+            this.ChannelListBox.TabIndex = 7;
+            this.ChannelListBox.SelectedValueChanged += new System.EventHandler(this.ChannelListBox_SelectedValueChanged);
+            // 
+            // webBrowser
+            // 
+            this.webBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.webBrowser.Location = new System.Drawing.Point(243, 3);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Name = "webBrowser";
+            this.tableLayoutPanel1.SetRowSpan(this.webBrowser, 5);
+            this.webBrowser.Size = new System.Drawing.Size(512, 523);
+            this.webBrowser.TabIndex = 8;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1541, 726);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(782, 553);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.WebBrowser webBrowser1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Button AddCollectionButton;
+        private System.Windows.Forms.Button DeleteCollectionButton;
+        private System.Windows.Forms.Button RenameCollectionButton;
+        private System.Windows.Forms.Button AddChannelBox;
+        private System.Windows.Forms.Button DeleteChannelButton;
+        private System.Windows.Forms.Button RenameChannelButton;
+        private System.Windows.Forms.ListBox CollectionsListBox;
+        private System.Windows.Forms.ListBox ChannelListBox;
+        private System.Windows.Forms.WebBrowser webBrowser;
     }
 }
 

@@ -3,221 +3,145 @@ using System.Windows.Forms;
 using System.Xml;
 using System.IO;
 using System.Net;
+using RSS_reader.Classes;
+using RSS_reader.Models;
+using RSS_reader.Forms;
+using System.Collections.Generic;
 
 namespace RSS_reader
 {
     public partial class MainForm : Form
     {
 
-        ImageOfChanel imageChanel = new ImageOfChanel();
+        private List<Collection> collections;
+        private List<Channel> channels;
 
-        Items[] articles;
-
-        ChannelClass channel = new ChannelClass();
- 
         public MainForm()
         {
             InitializeComponent();
+            Authentication();
         }
 
         //блокировка главного окна модальным окном регистрации/авторизации
-        private void MainForm_Load(object sender, EventArgs e)
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string result = InterplayForServer.Logout();
+            
+            Authentication();
+        }
+
+        private void Authentication()
         {
             AuthenticationForm form = new AuthenticationForm();
             form.ShowDialog();
+            FindCollections();
         }
 
-        bool getNewMessage(string url)
+        private void AddCollectionButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                WebRequest wr = WebRequest.Create(url);
-
-                wr.Proxy.Credentials = CredentialCache.DefaultCredentials;
-
-                XmlTextReader xtr = new XmlTextReader(wr.GetResponse().GetResponseStream());
-
-                XmlDocument doc = new XmlDocument();
-                doc.Load(xtr);
-
-                XmlNode root = doc.DocumentElement;
-
-                articles = new Items[root.SelectNodes("/rss/channel/item").Count];
-
-                XmlNodeList nodeList;
-                nodeList = root.ChildNodes;
-
-                int count = 0;
-
-                foreach (XmlNode chanel in nodeList)
-                {
-                    foreach (XmlNode chanel_item in chanel)
-                    {
-                        if (chanel_item.Name == "title")
-                        {
-                            channel.title = chanel_item.InnerText;
-                        }
-                        if (chanel_item.Name == "description")
-                        {
-                            channel.description = chanel_item.InnerText;
-                        }
-                        if (chanel_item.Name == "copyright")
-                        {
-                            channel.copyright = chanel_item.InnerText;
-                        }
-                        if (chanel_item.Name == "link")
-                        {
-                            channel.link = chanel_item.InnerText;
-                        }
-                        if (chanel_item.Name == "img")
-                        {
-                            XmlNodeList imgList = chanel_item.ChildNodes;
-                            foreach (XmlNode img_item in imgList)
-                            {
-                                if (img_item.Name == "url")
-                                {
-                                    imageChanel.imgURL = img_item.InnerText;
-                                }
-                                if (img_item.Name == "link")
-                                {
-                                    imageChanel.imgLink = img_item.InnerText;
-                                }
-                                if (img_item.Name == "title")
-                                {
-                                    imageChanel.imgTitle = img_item.InnerText;
-                                }
-                            }
-                        }
-                        if (chanel_item.Name == "item")
-                        {
-                            XmlNodeList itemsList = chanel_item.ChildNodes;
-                            articles[count] = new Items();
-
-                            foreach (XmlNode item in itemsList)
-                            {
-                                if (item.Name == "title")
-                                {
-                                    articles[count].title = item.InnerText;
-                                }
-                                if (item.Name == "link")
-                                {
-                                    articles[count].link = item.InnerText;
-                                }
-                                if (item.Name == "description")
-                                {
-                                    articles[count].description = item.InnerText;
-                                }
-                                if (item.Name == "pubDate")
-                                {
-                                    articles[count].pubDate = item.InnerText;
-                                }
-                            }
-                            count += 1;
-                        }
-                    }
-                }
-                return true;
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show("Ошибка получения данных : " + exc.Message);
-                return false;
-            }
+            Collection collection = new Collection();
+            ChangeCollection form = new ChangeCollection(collection);
+            form.ShowDialog();
+            InterplayForServer.CreateCollection(collection.Name);
+            FindCollections();
         }
 
-        bool generateHtml()
+        private void DeleteCollectionButton_Click(object sender, EventArgs e)
         {
-            try
+            InterplayForServer.DeleteCollection(collections[CollectionsListBox.SelectedIndex]);
+            FindCollections();
+        }
+
+        private void RenameCollectionButton_Click(object sender, EventArgs e)
+        {
+            Collection collection = collections[CollectionsListBox.SelectedIndex];
+            ChangeCollection form = new ChangeCollection(collection);
+            form.ShowDialog();
+            InterplayForServer.UpdateCollection(collection);
+            FindCollections();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            FindCollections();
+        }
+
+        private void FindCollections()
+        {
+            collections = InterplayForServer.FindCollections();
+            CollectionsListBox.DataSource = collections;
+        }
+
+        private void FindChanels()
+        {
+            channels = InterplayForServer.FindChannels(collections[CollectionsListBox.SelectedIndex]);
+            ChannelListBox.DataSource = channels;
+        }
+
+        private void CollectionsListBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            FindChanels();
+        }
+
+        private void AddChannelBox_Click(object sender, EventArgs e)
+        {
+            Channel item = new Channel();
+            ChangeChannel form = new ChangeChannel(item);
+            form.ShowDialog();
+            InterplayForServer.CreateChannel(item.Name, item.Url, collections[CollectionsListBox.SelectedIndex]);
+            FindChanels();
+        }
+
+        private void DeleteChannelButton_Click(object sender, EventArgs e)
+        {
+            InterplayForServer.DeleteChannel(channels[ChannelListBox.SelectedIndex]);
+            FindCollections();
+        }
+
+        private void RenameChannelButton_Click(object sender, EventArgs e)
+        {
+            Channel item = channels[ChannelListBox.SelectedIndex];
+            ChangeChannel form = new ChangeChannel(item);
+            form.ShowDialog();
+            InterplayForServer.UpdateChannel(item);
+            FindChanels();
+        }
+
+        private void ChannelListBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            Channel news = InterplayForServer.Loadnews(channels[ChannelListBox.SelectedIndex]);
+            DisplayHtml(CreateHTML(news));
+        }
+
+        private string CreateHTML(Channel channel)
+        {
+            string result = "<html><body>";
+            if (channel.News != null)
             {
-                using (StreamWriter writer = new StreamWriter("Message.html"))
+                foreach (News item in channel.News)
                 {
-                    writer.WriteLine("");
-                    writer.WriteLine("");
-                    writer.WriteLine("<meta charset= \"utf-8\">");
-                    //writer.WriteLine("<meta http-equiv=\" content-type\"=\" content=\"\" text=\"\" html;=\"\" charset=\"utf - 8\">");                   
-                    writer.WriteLine("<title>");
-                    writer.WriteLine(channel.title);
-                    writer.WriteLine("</title>");
-
-                    writer.WriteLine("<style type=\"text / css\">");
-                    writer.WriteLine("A{color:#483D8B; text-decoration:none; font:Verdana;}");
-                    writer.WriteLine("pre{font-family:courier;color:#000000;");
-                    writer.WriteLine("background-color:#dfe2e5;padding-top:5pt;padding-left:5pt;");
-                    writer.WriteLine("padding-bottom:5pt;border-top:1pt solid #87A5C3;");
-                    writer.WriteLine("border-bottom:1pt solid #87A5C3;border-left:1pt solid #87A5C3;");
-                    writer.WriteLine("border-right : 1pt solid #87A5C3; text-align : left;}");
-                    writer.WriteLine("</style>");
-                    writer.WriteLine("");
-                    writer.WriteLine("");
-
-                    writer.WriteLine("<font size=\" 2\" face=\" verdana\">");
-                    writer.WriteLine("<a href=" + imageChanel.imgLink + ">");
-                    writer.WriteLine("<img src=" + imageChanel.imgURL + "></a>  ");
-
-                    writer.WriteLine("<a href = " + channel.link +">" +
-                                     "<h2 align=\" center\">" + channel.title + "</h2></a>");
-
-                    writer.WriteLine("<h3 align=\" center\">" + channel.description + "</h3>");
-
-                    writer.WriteLine("");
-                    int count_element = 0;
-                    listBox1.Items.Clear();
-                    foreach (Items article in articles)
-                    {
-                        writer.WriteLine("");
-                        writer.WriteLine("");
-                        writer.WriteLine("");                
-                        listBox1.Items.Add(count_element + ". " + article.title + " (" + article.pubDate + ")");              
-                        count_element++;
-                        writer.WriteLine("<table width=\" 80% \"=\" align=\" center\"=\" border=\"1\"><tbody><tr><td>");
-
-                        writer.WriteLine("<a href = " + article.link + "><b>" + count_element + ". " + article.title + "</b></a>");
-
-                        writer.WriteLine("& (" + article.pubDate + ")");
-
-                    writer.WriteLine(@"");
-                        writer.WriteLine("<table width=\" 95%\"=\" align=\" center\"=\" border=\"0\"><tbody><tr><td>");
-
-                        writer.WriteLine(article.description);
-
-                        writer.WriteLine("</td></tr></tbody></table>");
-
-                        writer.WriteLine("<a href = " + article.link + ">");
-
-                        writer.WriteLine(@"<font size="" 2""="" right""="">Читать дальше >>> </font></a>");
-
-                        writer.WriteLine("</td></tr></tbody></table>");
-
-                        writer.WriteLine(@"<p align="" center""="">");
-                        writer.WriteLine("<a href = " +  channel.link + ">"
-                             + channel.copyright + "</a></p>");
-                        writer.WriteLine("</font>");
-                        writer.WriteLine("");
-                        writer.WriteLine("");
-
-                    }
-         
-                   
-
-                    label2.Text = "Всего сообщений: " + count_element.ToString();
-
-                    return true;
+                    result += "<h2>" + item.Title + "</h2>";
+                    result += "<a href=\"" + item.Link + "\">Read more... </a>";
+                    result += "<p>" + item.Content + "</p>";
+                    result += "<hr/>";
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
-                return false;
+                result += "<h2>Sorry, there was an error</h2>";
             }
+            result += "</html></body>";
+            return result;
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void DisplayHtml(string html)
         {
-            if (getNewMessage(textBox1.Text) == true && generateHtml() == true)
+            webBrowser.Navigate("about:blank");
+            if (webBrowser.Document != null)
             {
-                webBrowser1.Navigate(Environment.CurrentDirectory + "\\Message.html");
+                webBrowser.Document.Write(string.Empty);
             }
+            webBrowser.DocumentText = html;
         }
-
     }
 }

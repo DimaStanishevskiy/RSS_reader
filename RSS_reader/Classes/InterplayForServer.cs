@@ -5,62 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
+using RSS_reader.Models;
 
 namespace RSS_reader.Classes
 {
     static class InterplayForServer
     {
-        //Глобальна переменная пути к серверу
-        private const string SERVER_PATH = "http://localhost:29698";
-        //Пользователь
+        private const string SERVER_PATH = "http://localhost:5727";
         private static User user;
 
-        //регистрация
-        public static string Register(string email, string password)
-        {
-            var registerModel = new
-            {
-                Email = email,
-                Password = password,
-                ConfirmPassword = password
-            };
-            using (var client = new HttpClient())
-            {
-                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/Account/Register", registerModel).Result;
-                return response.StatusCode.ToString();
-            }
-        }
-
-        //Авторизация
-        public static string Authorization(string email, string password)
-        {
-            user = new User(email, password);
-            user.Token = GetTokenDictionary()["access_token"];
-            return "OK";
-        }
-
-        //Получение токена
-        public static Dictionary<string, string> GetTokenDictionary()
-        {
-            var pairs = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("grant_type", "password"),
-                new KeyValuePair<string, string>("username", user.Email),
-                new KeyValuePair<string, string>("Password", user.Password)
-            };
-            var content = new FormUrlEncodedContent(pairs);
-
-            using (var client = new HttpClient())
-            {
-                var response = client.PostAsync(SERVER_PATH + "/Token", content).Result;
-                var result = response.Content.ReadAsStringAsync().Result;
-                Dictionary<string, string> tokenDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
-                return tokenDictionary;
-            }
-        }
-
-        //создание клиента с токеном
-        public static HttpClient CreateClient(string accessToken = "")
+        static HttpClient CreateClient(string accessToken = "")
         {
             var client = new HttpClient();
             if (!string.IsNullOrWhiteSpace(accessToken))
@@ -71,25 +25,127 @@ namespace RSS_reader.Classes
             return client;
         }
 
-        //получаем информацию о клиенте
-        public static string GetUserInfo(string token)
+        #region User 
+        public static string Register(string Login, string password)
         {
-            using (var client = CreateClient(token))
+            var registerModel = new
             {
-                var response = client.GetAsync(SERVER_PATH + "/api/Account/UserInfo").Result;
-                return response.Content.ReadAsStringAsync().Result;
+                Login = Login,
+                Password = password
+            };
+            using (var client = new HttpClient())
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/login/registration", registerModel).Result;
+                return response.StatusCode.ToString();
             }
         }
 
-        public static string GetValues(string token)
+        public static string Authorization(string Login, string password)
         {
-            using (var client = CreateClient(token))
+            user = new User(Login, password);
+            user.Token = GetTokenDictionary();
+
+            if (user.Token.Length > 0)
             {
-                var response = client.GetAsync(SERVER_PATH + "/api/values").Result;
-                return response.Content.ReadAsStringAsync().Result;
+                return "OK";
+            }
+            else return "ERR";
+        }
+
+        public static string GetTokenDictionary()
+        {
+            
+
+            using (var client = new HttpClient())
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/login/token", user).Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                return result;
             }
         }
+
+        public static string Logout()
+        {
+            user = null;
+            return "OK";
+        }
+
+        #endregion
+
+        #region Collections
+        public static void CreateCollection(string Name)
+        {
+            Collection collection = new Collection() { Name = Name, Owner = user };
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/collection/create", collection).Result;
+            }
+        }
+        public static void UpdateCollection(Collection collection)
+        {
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/collection/update", collection).Result;
+            }
+        }
+        public static void DeleteCollection(Collection collection)
+        {
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/collection/delete", collection).Result;
+            }
+        }
+        public static List<Collection> FindCollections()
+        {
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/collection/find", user).Result;
+                return response.Content.ReadAsAsync<List<Collection>>().Result;
+            }
+        }
+        #endregion
+
+        #region Collections
+        public static void CreateChannel(string Name, string Url, Collection collection)
+        {
+            Channel channel = new Channel() { Name = Name, Url = Url, Collection = collection};
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/channel/create", channel).Result;
+            }
+        }
+        public static void UpdateChannel(Channel channel)
+        {
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/channel/update", channel).Result;
+            }
+        }
+        public static void DeleteChannel(Channel channel)
+        {
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/channel/delete", channel).Result;
+            }
+        }
+        public static List<Channel> FindChannels(Collection collection)
+        {
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/channel/find", collection).Result;
+                return response.Content.ReadAsAsync<List<Channel>>().Result;
+            }
+        }
+
+        public static Channel Loadnews(Channel channel)
+        {
+            using (var client = CreateClient(user.Token))
+            {
+                var response = client.PostAsJsonAsync(SERVER_PATH + "/api/channel/loadnews", channel).Result;
+                channel = response.Content.ReadAsAsync<Channel>().Result;
+                return channel;
+            }
+        }
+        #endregion
     }
-
-
 }
