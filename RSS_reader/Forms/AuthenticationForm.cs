@@ -24,8 +24,6 @@ namespace RSS_reader
         public AuthenticationForm()
         {
             InitializeComponent();
-            EmailField.Text = "stanish";
-            PasswordField.Text = "Dima4321re.";
             ErrorMessage.Text = "";
         }
 
